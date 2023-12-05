@@ -4,6 +4,14 @@ A collection of scripts I made for personal use, mostly generated with ChatGPT.
 These should assist in finding specific sets of files and directories in a file structure.
 They are mostly used on Mac, therefore the required dependencies can be retrieved through `pip` and `homebrew`.
 
+Dependency Installation:
+```
+pip3 install pymediainfo
+pip3 install argparse
+
+brew install libmediainfo
+```
+
 ## funxd-finder
 
 Used to find directories containing 'funxd.mkv' files.  
