@@ -1,6 +1,7 @@
 import subprocess
 import json
 import sys
+import os
 
 def get_video_info(video_file):
     command = ['ffprobe', '-v', 'error', '-select_streams', 'v:0', '-show_entries', 'stream=codec_name,width,height', '-show_entries', 'format=bit_rate', '-of', 'json', video_file]
@@ -27,8 +28,14 @@ def get_video_info(video_file):
         print(result.stderr)
         return None
 
-def beautify_output(codec, bitrate, width, height):
-    print("Video Information:")
+def beautify_output(file_path, codec, bitrate, width, height):
+    print("\n" + "="*50)
+    print(" " * 5 + "Video File Information Script")
+    print("="*50 + "\n")
+
+    print("Path to file:", os.path.dirname(file_path))
+    print("File name:", os.path.basename(file_path))
+    print("\nVideo Information:")
     print(f"  Codec: {codec}")
     print(f"  Bitrate: {bitrate:.2f} Mbps")
     print(f"  Resolution: {width}x{height}")
@@ -43,4 +50,4 @@ if __name__ == "__main__":
 
     if info:
         codec, bitrate, width, height = info
-        beautify_output(codec, bitrate, width, height)
+        beautify_output(video_file_path, codec, bitrate, width, height)
