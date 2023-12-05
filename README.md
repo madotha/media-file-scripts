@@ -26,7 +26,7 @@ python funxd-finder.py -v -d /path/to/starting-directory
 
 ## tmdb-finder
 
-Used to find directories which do not have a `{tmdb-123456}` extension.  
+Used to find directories which do not have a `{tmdb-123456}` or `{tvdb-123456}` extension.  
 Usage:
 
 ```
