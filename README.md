@@ -10,6 +10,7 @@ pip3 install pymediainfo
 pip3 install argparse
 
 brew install libmediainfo
+brew install ffmpeg
 ```
 
 ## funxd-finder
