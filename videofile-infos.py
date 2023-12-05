@@ -21,7 +21,7 @@ def get_video_info(video_file):
 
             return codec_name, bitrate_mbps, width, height
         else:
-            print("No video stream found in the file.")
+            print(f"No video stream found in the file: {video_file}")
             return None
     else:
         print("Error running ffprobe:")
@@ -30,7 +30,7 @@ def get_video_info(video_file):
 
 def beautify_output(file_path, codec, bitrate, width, height):
     print("\n" + "="*50)
-    print(" " * 5 + "Video File Information Script")
+    print(" " + os.path.basename(file_path))
     print("="*50 + "\n")
 
     print("Path to file:", os.path.dirname(file_path))
@@ -40,14 +40,36 @@ def beautify_output(file_path, codec, bitrate, width, height):
     print(f"  Bitrate: {bitrate:.2f} Mbps")
     print(f"  Resolution: {width}x{height}")
 
+def process_directory(directory_path):
+    for root, _, files in os.walk(directory_path):
+        for file_name in files:
+            file_path = os.path.join(root, file_name)
+            if is_video_file(file_path):
+                info = get_video_info(file_path)
+                if info:
+                    codec, bitrate, width, height = info
+                    beautify_output(file_path, codec, bitrate, width, height)
+
+def is_video_file(file_path):
+    video_extensions = {'.mp4', '.mkv', '.avi', '.mov', '.wmv', '.flv', '.webm'}
+    _, file_extension = os.path.splitext(file_path)
+    return file_extension.lower() in video_extensions
+
 if __name__ == "__main__":
     if len(sys.argv) != 2:
-        print("Usage: python script.py <video_file_path>")
+        print("Usage: python script.py <video_file_path_or_directory>")
         sys.exit(1)
 
-    video_file_path = sys.argv[1]
-    info = get_video_info(video_file_path)
+    target_path = sys.argv[1]
 
-    if info:
-        codec, bitrate, width, height = info
-        beautify_output(video_file_path, codec, bitrate, width, height)
+    if os.path.isfile(target_path):
+        # Single file case
+        info = get_video_info(target_path)
+        if info:
+            codec, bitrate, width, height = info
+            beautify_output(target_path, codec, bitrate, width, height)
+    elif os.path.isdir(target_path):
+        # Directory case
+        process_directory(target_path)
+    else:
+        print(f"The specified path ({target_path}) is neither a file nor a directory.")
